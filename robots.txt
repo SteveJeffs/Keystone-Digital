@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://keystone-digital.co.uk/sitemap.xml
