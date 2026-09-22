@@ -477,3 +477,6 @@ a.mini:hover{box-shadow:var(--shadow-lift)}
   .about-grid{grid-template-columns:1fr;gap:2rem}
   .about-photo{position:static;order:-1;max-width:340px}
 }
+
+/* long email address wraps cleanly on narrow screens */
+.footer-email{overflow-wrap:anywhere}
