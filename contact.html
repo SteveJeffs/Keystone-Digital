@@ -110,6 +110,7 @@
             <h2 style="font-size:1.25rem;margin-bottom:1.25rem">Send a message</h2>
             <form name="contact" method="POST" action="/thanks" data-netlify="true" data-netlify-honeypot="bot-field" data-enhance>
               <input type="hidden" name="form-name" value="contact">
+              <input type="hidden" name="source" value="direct">
               <p class="hp-field" aria-hidden="true">
                 <label for="ct-bot">Leave this field empty</label>
                 <input id="ct-bot" name="bot-field" type="text" tabindex="-1" autocomplete="off">

@@ -73,6 +73,47 @@
     revealEls.forEach(function (el) { el.classList.add("in"); });
   }
 
+  /* ---------- Visitor stats: Cloudflare Web Analytics ----------
+     Cookie-free visit counts. Paste your site token from the Cloudflare
+     dashboard between the quotes below to switch it on. Empty = off. */
+  var CF_ANALYTICS_TOKEN = "";
+  if (CF_ANALYTICS_TOKEN) {
+    var cf = document.createElement("script");
+    cf.defer = true;
+    cf.src = "https://static.cloudflareinsights.com/beacon.min.js?token=" + encodeURIComponent(CF_ANALYTICS_TOKEN);
+    document.head.appendChild(cf);
+  }
+
+  /* ---------- Where did this visitor come from? ----------
+     Reads ?ref=facebook (or similar) from the link someone arrived on, falls
+     back to the site that sent them, and records it in the hidden "source"
+     field of both forms. Nothing is stored on the visitor's device: the tag is
+     carried between pages by adding it to the site's own links instead. */
+  function cleanTag(s) { return String(s).toLowerCase().replace(/[^a-z0-9._-]/g, "").slice(0, 40); }
+  var source = "";
+  try {
+    var params = new URLSearchParams(location.search);
+    source = params.get("ref") || params.get("utm_source") || (params.has("fbclid") ? "facebook" : "");
+    if (!source && document.referrer) {
+      var host = new URL(document.referrer).hostname;
+      if (host && host !== location.hostname) source = host.replace(/^(www|m|l|lm)\./, "");
+    }
+  } catch (e) { source = ""; }
+  source = cleanTag(source);
+
+  if (source) {
+    // Carry the tag through internal links so it survives clicking around.
+    document.querySelectorAll('a[href$=".html"], a[href*=".html#"]').forEach(function (a) {
+      var href = a.getAttribute("href");
+      if (/^(https?:|mailto:|tel:)/.test(href)) return;
+      var parts = href.split("#");
+      a.setAttribute("href", parts[0] + (parts[0].indexOf("?") > -1 ? "&" : "?") + "ref=" + encodeURIComponent(source) + (parts[1] ? "#" + parts[1] : ""));
+    });
+  }
+  document.querySelectorAll('input[name="source"]').forEach(function (input) {
+    input.value = source || "direct";
+  });
+
   /* ---------- Form enhancement ----------
      Native HTML5 validation still runs with JS off. With JS on, we add
      inline, screen-reader-announced messages instead of browser bubbles. */
