@@ -73,17 +73,6 @@
     revealEls.forEach(function (el) { el.classList.add("in"); });
   }
 
-  /* ---------- Visitor stats: Cloudflare Web Analytics ----------
-     Cookie-free visit counts. Paste your site token from the Cloudflare
-     dashboard between the quotes below to switch it on. Empty = off. */
-  var CF_ANALYTICS_TOKEN = "";
-  if (CF_ANALYTICS_TOKEN) {
-    var cf = document.createElement("script");
-    cf.defer = true;
-    cf.src = "https://static.cloudflareinsights.com/beacon.min.js?token=" + encodeURIComponent(CF_ANALYTICS_TOKEN);
-    document.head.appendChild(cf);
-  }
-
   /* ---------- Where did this visitor come from? ----------
      Reads ?ref=facebook (or similar) from the link someone arrived on, falls
      back to the site that sent them, and records it in the hidden "source"
